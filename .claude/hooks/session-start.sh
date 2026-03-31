@@ -56,4 +56,10 @@ if [ -n "$PENDING_INBOX" ]; then
   echo "Pending inbox:"
   echo "$PENDING_INBOX" | sed 's/^/  - /'
 fi
+# Unfilled placeholder detection
+CLAUDE_MD="$ROOT/CLAUDE.md"
+if [ -f "$CLAUDE_MD" ] && grep -q '{{' "$CLAUDE_MD" 2>/dev/null; then
+  echo "Unfilled placeholders detected in CLAUDE.md."
+  echo "Run /seed to auto-configure your project."
+fi
 echo "======================"

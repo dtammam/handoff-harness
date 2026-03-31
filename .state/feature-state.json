@@ -30,13 +30,13 @@
     {
       "id": "T5",
       "description": "Add /seed nudge banner to setup.sh (both src/setup.sh and top-level setup.sh, must remain byte-identical)",
-      "status": "in-progress",
+      "status": "done",
       "artifacts": ["src/setup.sh", "setup.sh"]
     },
     {
       "id": "T6",
       "description": "Add placeholder detection and /seed nudge to session-start.sh (both src/.claude/hooks/session-start.sh and top-level .claude/hooks/session-start.sh, must remain byte-identical)",
-      "status": "pending",
+      "status": "in-progress",
       "artifacts": ["src/.claude/hooks/session-start.sh", ".claude/hooks/session-start.sh"]
     },
     {
@@ -48,5 +48,5 @@
   ],
   "exec_plan": "docs/exec-plans/active/versioning-and-seed-nudge-design.md",
   "created_at": "2026-03-31T00:00:00Z",
-  "updated_at": "2026-03-31T18:00:00Z"
+  "updated_at": "2026-03-31T20:00:00Z"
 }
