@@ -1,52 +1,34 @@
 {
-  "feature_name": "versioning-and-seed-nudge",
+  "feature_name": "prep-commands",
   "stage": "implementation",
   "status": "in-progress",
   "tasks": [
     {
       "id": "T1",
-      "description": "Create VERSION files (src/VERSION and top-level VERSION) containing semver string 0.1.0",
-      "status": "done",
-      "artifacts": ["src/VERSION", "VERSION"]
+      "description": "Add the 8 new prep commands (16 files, 8 pairs in .claude/commands/ and src/.claude/commands/)",
+      "status": "in-progress",
+      "artifacts": []
     },
     {
       "id": "T2",
-      "description": "Add portable checksum function, category lookup function, and manifest generation on fresh install to install.sh",
-      "status": "done",
-      "artifacts": ["install.sh"]
+      "description": "Merge temp improvements into existing commands + update first-line descriptions (kickoff, commit-only, commit-and-push, run-build, run-pe, run-pm, run-qa, run-sde) and update showme.md and kickoff-complex.md first lines. Also rename showme.md to show-me.md in both .claude/commands/ and src/.claude/commands/ to match hyphenated naming convention.",
+      "status": "pending",
+      "artifacts": []
     },
     {
       "id": "T3",
-      "description": "Add version-aware --update flow with category-based file handling and changelog summary to install.sh",
-      "status": "done",
-      "artifacts": ["install.sh"]
+      "description": "Update CLAUDE.md command tables in both root and src/ (add 8 new prep command rows, rename /showme to /show-me in existing rows)",
+      "status": "pending",
+      "artifacts": []
     },
     {
       "id": "T4",
-      "description": "Update install.sh header comment with platform documentation and usage examples",
-      "status": "done",
-      "artifacts": ["install.sh"]
-    },
-    {
-      "id": "T5",
-      "description": "Add /seed nudge banner to setup.sh (both src/setup.sh and top-level setup.sh, must remain byte-identical)",
-      "status": "done",
-      "artifacts": ["src/setup.sh", "setup.sh"]
-    },
-    {
-      "id": "T6",
-      "description": "Add placeholder detection and /seed nudge to session-start.sh (both src/.claude/hooks/session-start.sh and top-level .claude/hooks/session-start.sh, must remain byte-identical)",
-      "status": "done",
-      "artifacts": ["src/.claude/hooks/session-start.sh", ".claude/hooks/session-start.sh"]
-    },
-    {
-      "id": "T7",
-      "description": "Fix pipefail bug in session-start.sh: guard the git status pipeline on line 11 so that a non-zero exit from git status does not propagate through pipefail and kill the script under set -e. Append '|| echo 0' or wrap in a subshell. Both src/.claude/hooks/session-start.sh and .claude/hooks/session-start.sh must remain byte-identical after the fix.",
-      "status": "in-progress",
-      "artifacts": ["src/.claude/hooks/session-start.sh", ".claude/hooks/session-start.sh"]
+      "description": "Delete temp/ folder and final verification (byte-identical check, stale reference grep, untouched file confirmation, confirm showme.md no longer exists and show-me.md is present)",
+      "status": "pending",
+      "artifacts": []
     }
   ],
-  "exec_plan": "docs/exec-plans/active/versioning-and-seed-nudge-design.md",
-  "created_at": "2026-03-31T00:00:00Z",
-  "updated_at": "2026-03-31T21:00:00Z"
+  "exec_plan": "docs/exec-plans/active/prep-commands.md",
+  "created_at": "2026-03-31T22:00:00Z",
+  "updated_at": "2026-03-31T23:45:00Z"
 }
