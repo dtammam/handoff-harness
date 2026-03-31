@@ -22,7 +22,7 @@
     {
       "id": "T2",
       "description": "Add /showme and /seed command files. Create showme.md and seed.md at both .claude/commands/ (top-level) and src/.claude/commands/. Update the Commands table in both top-level CLAUDE.md and src/CLAUDE.md to include the two new rows. Content for each command is fully specified in design doc Sections 3 and 4.",
-      "status": "in-progress",
+      "status": "done",
       "artifacts": [
         ".claude/commands/showme.md",
         ".claude/commands/seed.md",
@@ -35,7 +35,7 @@
     {
       "id": "T3",
       "description": "Update install.sh to source distributable files from src/. Change PACK_FILES find to run inside src/ subdirectory. Change copy loop source path to prepend src/. Remove now-unnecessary exclusions for README.md, LICENSE, and install.sh. No external interface changes.",
-      "status": "pending",
+      "status": "in-progress",
       "artifacts": [
         "install.sh"
       ]
@@ -44,5 +44,5 @@
   "exec_plan": "docs/exec-plans/active/meta-harness-restructure.md",
   "design_doc": "docs/exec-plans/active/meta-harness-restructure-design.md",
   "created_at": "2026-03-31T00:00:00Z",
-  "updated_at": "2026-03-31T20:00:00Z"
+  "updated_at": "2026-03-31T21:00:00Z"
 }
