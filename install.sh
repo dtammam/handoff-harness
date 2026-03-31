@@ -32,14 +32,10 @@ git clone --depth 1 --branch "$BRANCH" "$REPO" "$TMPDIR/handoff-harness" 2>/dev/
 echo "Done."
 echo ""
 
-# Files to copy (relative to repo root)
-# Excludes: README.md, LICENSE, install.sh itself, .git
-PACK_FILES=$(cd "$TMPDIR/handoff-harness" && find . \
+# Files to copy (relative to src/)
+PACK_FILES=$(cd "$TMPDIR/handoff-harness/src" && find . \
   -not -path './.git/*' \
   -not -path './.git' \
-  -not -name 'README.md' \
-  -not -name 'LICENSE' \
-  -not -name 'install.sh' \
   -not -name '.' \
   -type f | sort)
 
@@ -71,7 +67,7 @@ fi
 # Copy files
 echo "Hydrating handoff-harness into $TARGET..."
 for file in $PACK_FILES; do
-  src="$TMPDIR/handoff-harness/$file"
+  src="$TMPDIR/handoff-harness/src/$file"
   dest="$TARGET/$file"
   mkdir -p "$(dirname "$dest")"
   cp "$src" "$dest"

@@ -1,5 +1,9 @@
 # CLAUDE.md
 
+This project consists primarily of Markdown files, shell scripts, and
+configuration files. There is no compiled application code. The SDLC
+pipeline manages documentation, agent definitions, and process automation.
+
 This file is the Claude Code entry point for this repo.
 
 ## Agent architecture
