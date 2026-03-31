@@ -52,6 +52,8 @@ engineering-manager's job. Invoke it instead.
 | `/run-sde` | Invoke software-developer (mobile workflow) |
 | `/run-build` | Invoke build-specialist (mobile workflow) |
 | `/run-qa` | Invoke quality-assurance (mobile workflow) |
+| `/showme` | Read-only pipeline status report |
+| `/seed` | One-shot project onboarding and placeholder filling |
 
 ### Key files
 
