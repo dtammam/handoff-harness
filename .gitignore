@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Don't ignore .state — it's part of the pipeline
+# But do ignore inbox files (ephemeral, per-session)
+.state/inbox/*.md
