@@ -1,6 +1,6 @@
 {
   "feature_name": "prep-commands",
-  "stage": "implementation",
+  "stage": "verification",
   "status": "done",
   "tasks": [
     {
@@ -50,5 +50,5 @@
   ],
   "exec_plan": "docs/exec-plans/active/prep-commands.md",
   "created_at": "2026-03-31T22:00:00Z",
-  "updated_at": "2026-03-31T23:59:00Z"
+  "updated_at": "2026-04-01T00:15:00Z"
 }
