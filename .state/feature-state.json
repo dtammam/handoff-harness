@@ -18,13 +18,13 @@
     {
       "id": "T3",
       "description": "Add version-aware --update flow with category-based file handling and changelog summary to install.sh",
-      "status": "in-progress",
+      "status": "done",
       "artifacts": ["install.sh"]
     },
     {
       "id": "T4",
       "description": "Update install.sh header comment with platform documentation and usage examples",
-      "status": "pending",
+      "status": "in-progress",
       "artifacts": ["install.sh"]
     },
     {
@@ -48,5 +48,5 @@
   ],
   "exec_plan": "docs/exec-plans/active/versioning-and-seed-nudge-design.md",
   "created_at": "2026-03-31T00:00:00Z",
-  "updated_at": "2026-03-31T12:00:00Z"
+  "updated_at": "2026-03-31T16:00:00Z"
 }

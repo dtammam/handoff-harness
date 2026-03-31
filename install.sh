@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 # handoff-harness installer
+#
+# Platforms:
+#   - macOS and Linux are natively supported.
+#   - Windows requires WSL; no PowerShell installer is planned.
+#   - Runtime dependencies: bash, git, and sha256sum (Linux) or shasum (Mac).
+#
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash
-#   curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash -s -- --update
+#   Fresh install:
+#     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash
+#   Update:
+#     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash -s -- --update
 set -euo pipefail
 
 compute_sha256() {
