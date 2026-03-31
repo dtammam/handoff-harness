@@ -8,7 +8,7 @@ ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 # Branch and working tree state
 BRANCH="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'detached')"
-DIRTY="$(git status --short 2>/dev/null | wc -l | tr -d ' ')"
+DIRTY="$(git status --short 2>/dev/null | wc -l | tr -d ' ' || echo '0')"
 
 # Active execution plans
 ACTIVE_DIR="$ROOT/docs/exec-plans/active"
