@@ -1,6 +1,7 @@
-# Run Principal Engineer
+# Run the Principal Engineer agent.
 
 Invoke the principal-engineer specialist agent from the mobile workflow (Session 2).
+Use this in Session 2 (specialist workbench) after the EM has routed work via `/prep-pe-design` in Session 1.
 
 ## Workflow
 1. Verify `.state/inbox/principal-engineer.md` exists and is non-empty

@@ -1,6 +1,7 @@
-# Run Product Manager
+# Run the Product Manager agent.
 
 Invoke the product-manager specialist agent from the mobile workflow (Session 2).
+Use this in Session 2 (specialist workbench) after the EM has routed work via `/prep-pm-discover` or `/prep-pm-accept` in Session 1.
 
 ## Workflow
 1. Verify `.state/inbox/product-manager.md` exists and is non-empty

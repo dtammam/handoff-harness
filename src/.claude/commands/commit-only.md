@@ -1,4 +1,4 @@
-# Commit Only
+# Safely stage and commit without pushing. All quality gates enforced.
 
 Safely commit with all quality gates enforced.
 

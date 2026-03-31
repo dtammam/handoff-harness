@@ -1,4 +1,4 @@
-# Show Me
+# Read-only pipeline status report.
 
 Read-only status report for the current SDLC pipeline state.
 

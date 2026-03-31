@@ -273,7 +273,7 @@ Each task is scoped for a single SDE agent session.
 
 #### Task 2: Merge temp improvements into existing commands
 
-**Files modified (16 total -- 8 pairs, seed.md excluded):**
+**Files modified (20 total -- 10 pairs):**
 - `.claude/commands/kickoff.md` + `src/.claude/commands/kickoff.md`
 - `.claude/commands/commit-only.md` + `src/.claude/commands/commit-only.md`
 - `.claude/commands/commit-and-push.md` + `src/.claude/commands/commit-and-push.md`
@@ -282,26 +282,35 @@ Each task is scoped for a single SDE agent session.
 - `.claude/commands/run-pm.md` + `src/.claude/commands/run-pm.md`
 - `.claude/commands/run-qa.md` + `src/.claude/commands/run-qa.md`
 - `.claude/commands/run-sde.md` + `src/.claude/commands/run-sde.md`
+- `.claude/commands/kickoff-complex.md` + `src/.claude/commands/kickoff-complex.md`
+- `.claude/commands/seed.md` + `src/.claude/commands/seed.md`
+
+**Files renamed (2 pairs):**
+- `.claude/commands/showme.md` -> `.claude/commands/show-me.md`
+- `src/.claude/commands/showme.md` -> `src/.claude/commands/show-me.md`
 
 **Work:**
+
+*Merge from temp (adopt temp version, update cross-references):*
 - kickoff.md: Adopt temp version structure, incorporate existing checklist items (overlapping plan check, tech debt check) into the EM instruction, update `/discover` to `/prep-pm-discover`
 - commit-only.md: Replace with temp version (descriptive title)
 - commit-and-push.md: Replace with temp version (descriptive title)
-- seed.md: No changes (keep existing)
 - run-build.md: Replace with temp version, update `/verify` to `/prep-build-verify`
 - run-pe.md: Replace with temp version, update `/design` to `/prep-pe-design`
 - run-pm.md: Replace with temp version, update `/discover` to `/prep-pm-discover`, `/accept` to `/prep-pm-accept`
 - run-qa.md: Replace with temp version, update `/review` to `/prep-qa-review`
 - run-sde.md: Replace with temp version, update `/implement` to `/prep-sde-implement`
-- Write identical content to both directories
-- Verify byte-identical copies
 
-Additionally, rename `showme.md` to `show-me.md`:
-- Rename `.claude/commands/showme.md` to `.claude/commands/show-me.md`
-- Rename `src/.claude/commands/showme.md` to `src/.claude/commands/show-me.md`
-- Content is unchanged; only the filename changes
+*First-line description updates only (no temp counterpart, body unchanged):*
+- showme.md -> show-me.md: Rename file, change first line from `# Show Me` to `# Read-only pipeline status report.`
+- kickoff-complex.md: Change first line from `# Kickoff Complex` to `# Plan-gated intake for multi-domain or risky changes.`
+- seed.md: Change first line from `# Seed` to `# Onboard the agent framework into this repository.`
 
-**Definition of done:** All 8 commands are updated, seed.md is confirmed unchanged, all cross-references use prep-prefixed names, byte-identical copies maintained. `showme.md` has been renamed to `show-me.md` in both directories. `kickoff-complex.md` is untouched.
+*All files:*
+- Write identical content to both `.claude/commands/` and `src/.claude/commands/`
+- Verify byte-identical copies between directories
+
+**Definition of done:** All 10 commands are updated with descriptive `# ` first lines, all cross-references use prep-prefixed names, byte-identical copies maintained across directories. `showme.md` has been renamed to `show-me.md` in both directories. Every command file in the repo now has a descriptive first-line `# ` heading (not just a title-case name).
 
 #### Task 3: Update CLAUDE.md command tables
 
