@@ -52,8 +52,16 @@ engineering-manager's job. Invoke it instead.
 | `/run-sde` | Invoke software-developer (mobile workflow) |
 | `/run-build` | Invoke build-specialist (mobile workflow) |
 | `/run-qa` | Invoke quality-assurance (mobile workflow) |
-| `/showme` | Read-only pipeline status report |
+| `/show-me` | Read-only pipeline status report |
 | `/seed` | One-shot project onboarding and placeholder filling |
+| `/prep-pm-discover` | Prep Discovery -- route to Product Manager |
+| `/prep-pe-design` | Prep Design -- route to Principal Engineer |
+| `/prep-em-tasks` | Prep Tasks -- EM breaks design into tasks |
+| `/prep-sde-implement` | Prep Implementation -- route to Software Developer |
+| `/prep-build-verify` | Prep Verification -- route to Build Specialist |
+| `/prep-qa-review` | Prep Review -- route to Quality Assurance |
+| `/prep-pm-accept` | Prep Acceptance -- route to Product Manager |
+| `/prep-em-done` | Close feature -- commit, push, PR, optional release |
 
 ### Key files
 

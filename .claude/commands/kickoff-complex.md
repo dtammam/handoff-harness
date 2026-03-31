@@ -1,4 +1,4 @@
-# Kickoff Complex
+# Plan-gated intake for multi-domain or risky changes.
 
 Plan-gated intake for multi-domain or risky changes.
 

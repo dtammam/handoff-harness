@@ -1,6 +1,7 @@
-# Run Build Specialist
+# Run the Build Specialist agent.
 
-Invoke the build-specialist agent from the mobile workflow (Session 2).
+Invoke the build-specialist specialist agent from the mobile workflow (Session 2).
+Use this in Session 2 (specialist workbench) after the EM has routed work via `/prep-build-verify` in Session 1.
 
 ## Workflow
 1. Verify `.state/inbox/build-specialist.md` exists and is non-empty
