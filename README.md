@@ -41,17 +41,103 @@ The engineering-manager reads and writes the state file. Other agents read it fo
 
 ## Commands
 
+Commands are organized into four groups: intake, commit, specialist invocation, and pipeline prep/utility.
+
 | Command | File | Purpose |
 |---------|------|---------|
 | `/kickoff` | `.claude/commands/kickoff.md` | Simple intake for single-domain changes |
-| `/kickoff-complex` | `.claude/commands/kickoff-complex.md` | Plan-gated intake for multi-domain changes |
-| `/commit-only` | `.claude/commands/commit-only.md` | Stage and commit |
-| `/commit-and-push` | `.claude/commands/commit-and-push.md` | Stage, commit, push |
-| `/run-pm` | `.claude/commands/run-pm.md` | Invoke product-manager agent |
-| `/run-pe` | `.claude/commands/run-pe.md` | Invoke principal-engineer agent |
-| `/run-sde` | `.claude/commands/run-sde.md` | Invoke software-developer agent |
-| `/run-build` | `.claude/commands/run-build.md` | Invoke build-specialist agent |
-| `/run-qa` | `.claude/commands/run-qa.md` | Invoke quality-assurance agent |
+| `/kickoff-complex` | `.claude/commands/kickoff-complex.md` | Plan-gated intake for multi-domain/risky changes |
+| `/commit-only` | `.claude/commands/commit-only.md` | Stage and commit with quality gates |
+| `/commit-and-push` | `.claude/commands/commit-and-push.md` | Stage, commit, push with quality gates |
+| `/run-pm` | `.claude/commands/run-pm.md` | Invoke product-manager (mobile workflow) |
+| `/run-pe` | `.claude/commands/run-pe.md` | Invoke principal-engineer (mobile workflow) |
+| `/run-sde` | `.claude/commands/run-sde.md` | Invoke software-developer (mobile workflow) |
+| `/run-build` | `.claude/commands/run-build.md` | Invoke build-specialist (mobile workflow) |
+| `/run-qa` | `.claude/commands/run-qa.md` | Invoke quality-assurance (mobile workflow) |
+| `/show-me` | `.claude/commands/show-me.md` | Read-only pipeline status report |
+| `/seed` | `.claude/commands/seed.md` | One-shot project onboarding and placeholder filling |
+| `/prep-pm-discover` | `.claude/commands/prep-pm-discover.md` | Prep Discovery -- route to Product Manager |
+| `/prep-pe-design` | `.claude/commands/prep-pe-design.md` | Prep Design -- route to Principal Engineer |
+| `/prep-em-tasks` | `.claude/commands/prep-em-tasks.md` | Prep Tasks -- EM breaks design into tasks |
+| `/prep-sde-implement` | `.claude/commands/prep-sde-implement.md` | Prep Implementation -- route to Software Developer |
+| `/prep-build-verify` | `.claude/commands/prep-build-verify.md` | Prep Verification -- route to Build Specialist |
+| `/prep-qa-review` | `.claude/commands/prep-qa-review.md` | Prep Review -- route to Quality Assurance |
+| `/prep-pm-accept` | `.claude/commands/prep-pm-accept.md` | Prep Acceptance -- route to Product Manager |
+| `/prep-em-done` | `.claude/commands/prep-em-done.md` | Close feature -- commit, push, PR, optional release |
+
+## Walkthrough
+
+### 1. A blank workspace
+
+Start with a fresh project directory. All you need is a repo with a README.
+
+![A fresh Claude Code workspace with an empty file tree and terminal](docs/assets/blank.png)
+
+*A blank project workspace before handoff-harness is installed.*
+
+### 2. Run the one-liner installer
+
+Run the curl installer to hydrate the repo with agents, commands, hooks, and state files.
+
+![Terminal output showing the curl installer hydrating 58 files into the project](docs/assets/one-liner.png)
+
+*Running the one-liner installer to hydrate a greenfield repo.*
+
+### 3. Run setup
+
+Execute `setup.sh` to verify the directory structure and wire git hooks.
+
+![Terminal output of setup.sh verifying directories and setting permissions](docs/assets/scripts.png)
+
+*Running `setup.sh` to wire git hooks and verify directory structure.*
+
+### 4. Seed the project
+
+Use the `/seed` command to auto-detect your tech stack and fill in configuration placeholders across all config files.
+
+![Claude Code session running /seed, showing the engineering-manager scanning and filling placeholders](docs/assets/seed.png)
+
+*Running `/seed` to auto-detect the tech stack and fill configuration placeholders.*
+
+### 5. Kick off a feature
+
+Use `/kickoff` to start a new feature. The engineering-manager creates the feature state and routes to the discovery stage.
+
+![Claude Code session running /kickoff to bootstrap a new feature](docs/assets/kickoff.png)
+
+*Using `/kickoff` to start a new feature -- the EM creates the feature state and routes to discovery.*
+
+### 6. Prepare for discovery
+
+After kickoff, the EM summarizes what happens next. Run `/prep-pm-discover` to prepare the product-manager's inbox for the Discovery stage.
+
+![The EM's post-kickoff summary with /prep-pm-discover being typed](docs/assets/discover.png)
+
+*After kickoff, the EM summarizes next steps and prompts the user to run `/prep-pm-discover`.*
+
+### 7. Run the prep command
+
+Running `/prep-pm-discover` writes the product-manager's inbox file and advances the pipeline state.
+
+![Claude Code session executing /prep-pm-discover, writing the PM inbox file](docs/assets/prep-pm-discover.png)
+
+*Running `/prep-pm-discover` to prepare the product-manager inbox for the Discovery stage.*
+
+### 8. Invoke the specialist
+
+Switch to the specialist session and run `/run-pm` to invoke the product-manager agent.
+
+![The specialist session showing /run-pm in the command palette](docs/assets/run-pm.png)
+
+*In the specialist session, `/run-pm` invokes the product-manager agent to run Discovery.*
+
+### 9. Discovery complete
+
+The product-manager agent reads its inbox, runs Discovery, and presents requirements and acceptance criteria for user approval.
+
+![Product-manager agent output showing completed requirements and acceptance criteria](docs/assets/post-run-pm.png)
+
+*The product-manager agent completes Discovery and presents requirements and acceptance criteria for user approval.*
 
 ## Installation
 
@@ -115,8 +201,8 @@ setup.sh               # Post-hydration setup (git hooks, permissions)
 
 Two sessions running simultaneously against the same working directory:
 
-- **Session 1 (EM):** Uses `/kickoff`, `/discover`, `/design`, etc. — persistent, long-running
-- **Session 2 (Specialist workbench):** Uses `/run-pm`, `/run-sde`, etc. — ephemeral, one agent at a time
+- **Session 1 (EM):** Persistent, long-running. Uses `/kickoff` to start features, then `/prep-*` commands (e.g., `/prep-pm-discover`, `/prep-pe-design`, `/prep-sde-implement`) to advance through pipeline stages.
+- **Session 2 (Specialist workbench):** Ephemeral, one agent at a time. Uses `/run-pm`, `/run-pe`, `/run-sde`, `/run-build`, or `/run-qa` to invoke the agent whose inbox was prepared by Session 1.
 
 The EM writes `.state/inbox/<agent-name>.md`. Session 2 consumes those inbox files via the `/run-*` commands.
 
