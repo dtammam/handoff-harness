@@ -1,3 +1,5 @@
+<!-- HUMAN-MAINTAINED: This file is maintained by humans only. No pipeline agent may read, modify, or overwrite this file. -->
+
 # Quality Score
 
 Grades each domain by architectural layer. Updated periodically.

@@ -1,3 +1,5 @@
+<!-- HUMAN-MAINTAINED: This file is maintained by humans only. No pipeline agent may read, modify, or overwrite this file. -->
+
 # Agents
 
 Operating instructions and conventions for the multi-agent pipeline.

@@ -2,6 +2,22 @@
 
 A multi-agent SDLC pipeline for Claude Code. Instead of one monolith session handling everything, specialist agents handle each phase of the development lifecycle in their own context window.
 
+## Quick Start
+
+```bash
+# Install
+curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash
+
+# Setup
+bash setup.sh
+
+# Seed (in Claude Code)
+/seed
+
+# Start building
+/kickoff
+```
+
 ## Architecture
 
 ```
@@ -55,7 +71,7 @@ Commands are organized into four groups: intake, commit, specialist invocation, 
 | `/run-build` | `.claude/commands/run-build.md` | Invoke build-specialist (mobile workflow) |
 | `/run-qa` | `.claude/commands/run-qa.md` | Invoke quality-assurance (mobile workflow) |
 | `/show-me` | `.claude/commands/show-me.md` | Read-only pipeline status report |
-| `/seed` | `.claude/commands/seed.md` | One-shot project onboarding and placeholder filling |
+| `/seed` | `.claude/commands/seed.md` | One-shot project onboarding with phased execution, dry-run mode, and brownfield safety |
 | `/prep-pm-discover` | `.claude/commands/prep-pm-discover.md` | Prep Discovery -- route to Product Manager |
 | `/prep-pe-design` | `.claude/commands/prep-pe-design.md` | Prep Design -- route to Principal Engineer |
 | `/prep-em-tasks` | `.claude/commands/prep-em-tasks.md` | Prep Tasks -- EM breaks design into tasks |
@@ -149,7 +165,9 @@ curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/instal
 
 ### Existing repo (brownfield)
 
-Same command — the installer detects existing files, archives them to `.state/plans/legacy/`, then hydrates. After hydration, run the onboarding agent to generate ARCHITECTURE.md from your existing codebase.
+Same command — the installer detects existing files and archives them to `.state/plans/legacy/`. Harness-owned files (agents, commands, hooks) are overwritten with the latest versions. Project-owned files (CLAUDE.md, CONTRIBUTING.md, ARCHITECTURE.md, RELIABILITY.md, QUALITY_SCORE.md, AGENTS.md) and scaffold files (tech-debt-tracker.md) are preserved — template versions are written as `.harness-update` sidecars for manual review.
+
+After hydration, run `/seed` to auto-detect your tech stack and fill placeholders.
 
 ### Updating
 

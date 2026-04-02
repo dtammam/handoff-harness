@@ -11,6 +11,8 @@
 #     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash
 #   Update:
 #     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash -s -- --update
+#   Install from a specific branch (for testing):
+#     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/<branch>/install.sh | bash -s -- --branch=<branch>
 set -euo pipefail
 
 compute_sha256() {
@@ -34,10 +36,10 @@ get_category() {
     .claude/commands/*)                   echo "harness-owned" ;;
     .claude/hooks/*)                      echo "harness-owned" ;;
     .claude/settings.json)                echo "harness-owned" ;;
-    docs/AGENTS.md)                       echo "harness-owned" ;;
     CLAUDE.md)                            echo "project-owned" ;;
     docs/CONTRIBUTING.md)                 echo "project-owned" ;;
     docs/ARCHITECTURE.md)                 echo "project-owned" ;;
+    docs/AGENTS.md)                       echo "project-owned" ;;
     docs/RELIABILITY.md)                  echo "project-owned" ;;
     docs/QUALITY_SCORE.md)                echo "project-owned" ;;
     setup.sh)                             echo "scaffold" ;;
@@ -66,6 +68,7 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 for arg in "$@"; do
   case "$arg" in
     --update) UPDATE=true ;;
+    --branch=*) BRANCH="${arg#--branch=}" ;;
     *) echo "Unknown flag: $arg"; exit 1 ;;
   esac
 done
@@ -270,13 +273,34 @@ else
     echo ""
   fi
 
-  # Copy files
+  # Copy files (category-aware for brownfield)
   echo "Hydrating handoff-harness into $TARGET..."
+  merge_list=""
+  merged=0
   for file in $PACK_FILES; do
+    clean_path="${file#./}"
     src="$TMPDIR/handoff-harness/src/$file"
-    dest="$TARGET/$file"
+    dest="$TARGET/$clean_path"
+    category="$(get_category "$clean_path")"
     mkdir -p "$(dirname "$dest")"
-    cp "$src" "$dest"
+
+    if [ -n "$CONFLICTS" ] && [ -f "$dest" ]; then
+      # Brownfield: existing file — handle by category
+      case "$category" in
+        harness-owned)
+          cp "$src" "$dest"
+          ;;
+        project-owned|scaffold)
+          # Preserve existing content; write template as sidecar for reference
+          cp "$src" "${dest}.harness-update"
+          merge_list="$merge_list $clean_path"
+          merged=$((merged + 1))
+          ;;
+      esac
+    else
+      # Greenfield or new file — copy directly
+      cp "$src" "$dest"
+    fi
   done
 
   # Make scripts executable
@@ -320,6 +344,9 @@ else
   rm -rf "$TMPDIR"
 
   echo "Done. $(echo "$PACK_FILES" | wc -l | tr -d ' ') files hydrated."
+  if [ "$merged" -gt 0 ]; then
+    echo "  Files needing merge: $merged (existing project content preserved)"
+  fi
   echo ""
   echo "Next steps:"
   echo "  1. Run: bash setup.sh"
@@ -327,6 +354,15 @@ else
   if [ -n "$CONFLICTS" ]; then
     echo "  3. Review archived files in .state/plans/legacy/$TIMESTAMP/"
     echo "  4. Run the onboarding agent to generate ARCHITECTURE.md from your codebase"
+  fi
+  if [ "$merged" -gt 0 ]; then
+    echo ""
+    echo "The following files have existing content and were preserved."
+    echo "Review each .harness-update file for any new template content:"
+    echo ""
+    for path in $merge_list; do
+      echo "  $path (template at ${path}.harness-update)"
+    done
   fi
   echo ""
   echo "For brownfield repos, run the onboarding agent after setup to populate"

@@ -16,7 +16,8 @@ implementation tasks.
 2. Read `.state/feature-state.json` for current pipeline state
 3. Read `docs/CONTRIBUTING.md` for project coding standards
 4. Read `docs/ARCHITECTURE.md` for system architecture
-5. Read the execution plan for requirements and design context
+5. Read `docs/RELIABILITY.md` for reliability standards and patterns
+6. Read the execution plan for requirements and design context
 
 ## Code review
 
