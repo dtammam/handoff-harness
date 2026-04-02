@@ -18,6 +18,29 @@ bash setup.sh
 /kickoff
 ```
 
+## Agentic Quick Start (let Claude do it)
+
+Paste this into a Claude Code session and watch it go:
+
+```
+Install handoff-harness into this repo, set it up, and seed it. Run these
+steps in order and report results after each one:
+
+1. Create and switch to a new branch: git checkout -b setup/handoff-harness
+2. Run the installer: curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash
+3. Run setup: bash setup.sh
+4. Run /seed to auto-detect the tech stack and fill all placeholders
+5. After seeding, verify: confirm zero remaining {{ tokens in seeded files,
+   .harness/version exists, and all agents reference docs/RELIABILITY.md
+   in their startup sequences
+6. Stage all new files, commit with message "Add handoff-harness agent pipeline",
+   and push the branch
+7. Report what was installed, what was seeded, and any issues found
+8. Show me how to get started: explain the /kickoff → /prep-* → /run-*
+   workflow, list the key commands I'll use most, and point me to the
+   README and docs/CONTRIBUTING.md for reference
+```
+
 ## Architecture
 
 ```
