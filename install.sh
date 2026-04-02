@@ -11,6 +11,8 @@
 #     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash
 #   Update:
 #     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash -s -- --update
+#   Install from a specific branch (for testing):
+#     curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/<branch>/install.sh | bash -s -- --branch=<branch>
 set -euo pipefail
 
 compute_sha256() {
@@ -66,6 +68,7 @@ TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 for arg in "$@"; do
   case "$arg" in
     --update) UPDATE=true ;;
+    --branch=*) BRANCH="${arg#--branch=}" ;;
     *) echo "Unknown flag: $arg"; exit 1 ;;
   esac
 done

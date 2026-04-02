@@ -86,6 +86,12 @@ One-shot onboarding command that auto-detects project configuration and fills in
 
    1c. Build the list of files that will be processed (passed both checks).
 
+   IMPORTANT: CLAUDE.md almost always contains placeholder tokens in its
+   "Project-specific configuration" section (e.g., {{LANGUAGE}}, {{BUILD_CMD}},
+   {{TEST_CMD}}, {{LINT_CMD}}, {{FORMAT_CMD}}). If your grep reports zero
+   matches for CLAUDE.md, re-read the file and search again — a false negative
+   here means the entire file will be silently skipped.
+
    NO-OP DETERMINATION: If ALL non-no-touch-list target files have no `{{` tokens
    (i.e., the list from step 1c is empty), produce a NO-OP REPORT:
       - State that all placeholders are already filled.
@@ -134,6 +140,7 @@ One-shot onboarding command that auto-detects project configuration and fills in
 
    For each file that passed Phase 1 checks, replace placeholder tokens with detected
    values using the Edit tool:
+      - {{PROJECT_DESCRIPTION}} -> 1-3 sentence description of the project's tech stack and purpose, derived from detected language/framework and repo structure
       - {{LANGUAGE}} -> detected primary language
       - {{FRAMEWORK}} -> detected framework (or "None" if not applicable)
       - {{PACKAGE_MANAGER}} -> detected package manager
