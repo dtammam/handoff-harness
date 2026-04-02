@@ -36,6 +36,9 @@ steps in order and report results after each one:
 6. Stage all new files, commit with message "Add handoff-harness agent pipeline",
    and push the branch
 7. Report what was installed, what was seeded, and any issues found
+8. Show me how to get started: explain the /kickoff → /prep-* → /run-*
+   workflow, list the key commands I'll use most, and point me to the
+   README and docs/CONTRIBUTING.md for reference
 ```
 
 ## Architecture
