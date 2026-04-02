@@ -2,6 +2,22 @@
 
 A multi-agent SDLC pipeline for Claude Code. Instead of one monolith session handling everything, specialist agents handle each phase of the development lifecycle in their own context window.
 
+## Quick Start
+
+```bash
+# Install
+curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash
+
+# Setup
+bash setup.sh
+
+# Seed (in Claude Code)
+/seed
+
+# Start building
+/kickoff
+```
+
 ## Architecture
 
 ```
@@ -157,12 +173,6 @@ After hydration, run `/seed` to auto-detect your tech stack and fill placeholder
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/main/install.sh | bash -s -- --update
-```
-
-### Testing from a branch
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/dtammam/handoff-harness/<branch>/install.sh | bash -s -- --branch=<branch>
 ```
 
 ## Directory Structure
