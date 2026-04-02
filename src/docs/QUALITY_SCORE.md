@@ -1,4 +1,4 @@
-<!-- HUMAN-MAINTAINED: This file is maintained by humans only. No pipeline agent may read or modify this file. -->
+<!-- HUMAN-MAINTAINED: This file is maintained by humans only. No pipeline agent may read, modify, or overwrite this file. -->
 
 # Quality Score
 

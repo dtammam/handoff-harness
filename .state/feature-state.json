@@ -1,1 +1,47 @@
-{}
+{
+  "feature_name": "seed-command-fixes-pipeline-wiring",
+  "stage": "done",
+  "tasks": [
+    {
+      "id": "T1",
+      "description": "Agent pipeline wiring (REQ-B1, REQ-B2, REQ-B3): Edit software-developer.md and quality-assurance.md startup sequences to add a step reading docs/RELIABILITY.md after the ARCHITECTURE.md step. Add HTML comment human-maintained header to all 4 copies of QUALITY_SCORE.md and AGENTS.md (docs/ and src/docs/).",
+      "status": "done",
+      "artifacts": [
+        ".claude/agents/software-developer.md",
+        ".claude/agents/quality-assurance.md",
+        "docs/QUALITY_SCORE.md",
+        "docs/AGENTS.md",
+        "src/docs/QUALITY_SCORE.md",
+        "src/docs/AGENTS.md"
+      ]
+    },
+    {
+      "id": "T2",
+      "description": "CLAUDE.md restoration (REQ-C1, REQ-C2, REQ-C3): Verify the command table against actual files in .claude/commands/ and remove any stale entries. Add the 7 missing sections (Session protocol, Non-negotiables, Coding standards reference, Quality gates, Exec plan ownership, Change hygiene rules, Reference docs list) after 'Mobile workflow' and before 'Project-specific configuration'. Add an inline ASCII workflow diagram section showing the full agent pipeline flow. Derive content from existing docs -- do not invent new conventions or introduce placeholders.",
+      "status": "done",
+      "artifacts": [
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "id": "T3",
+      "description": "Seed command rewrite -- safety rules and core workflow (REQ-A1, REQ-A2, REQ-A3, REQ-A4): Rewrite .claude/commands/seed.md to add a prominent Rules subsection containing the Edit-only rule (prohibit Write on files with non-placeholder content), the no-touch list (tech-debt-tracker.md, QUALITY_SCORE.md, AGENTS.md with suffix matching), and restructure the workflow into phased execution: Phase 1 pre-flight scan (grep for {{ tokens, skip files with none), Phase 4 replacement (governed by Edit-only rule), Phase 5 per-replacement verification logging. Update the seed report template with new sections: Skipped (no-touch list), Skipped (no placeholders), Replacements Made (per-replacement records with file/token/value/integrity statement).",
+      "status": "done",
+      "artifacts": [
+        ".claude/commands/seed.md"
+      ]
+    },
+    {
+      "id": "T4",
+      "description": "Seed command rewrite -- operational capabilities (REQ-D1, REQ-D2, REQ-D3, REQ-D4, REQ-D5): Extend the phased workflow in seed.md with: Phase 0 dry-run gate (scan and report only if --dry-run present), Phase 2 brownfield/greenfield classification per file, Phase 3 backup-before-write (.pre-seed.bak with oldest-backup preservation), Phase 6 harness manifest creation (read/create .harness/version, write .harness/manifest.json with 5 required fields), Phase 7 post-seed validation (check for remaining {{ tokens, Markdown validity for .md files, non-empty for shell files). Add Dry-Run Summary, File Classifications, Backups Created, and Validation Results sections to the seed report. Create .harness/version with content '1.0.0'. Depends on T3.",
+      "status": "done",
+      "artifacts": [
+        ".claude/commands/seed.md",
+        ".harness/version"
+      ]
+    }
+  ],
+  "exec_plan": "docs/exec-plans/completed/seed-fixes-requirements.md",
+  "created_at": "2026-04-02T00:00:00Z",
+  "updated_at": "2026-04-02T20:00:00Z"
+}
