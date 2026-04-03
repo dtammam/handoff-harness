@@ -149,7 +149,7 @@ Bootstrap → Discovery → Design → Tasks → Implementation → Verification
   - Independently testable
   - Clearly scoped (files to touch, behavior to add/change)
 - Write task list to `.state/feature-state.json` tasks array
-- Write a ## Task Breakdown section to the exec plan
+- Write a ## Tasks section to the exec plan
 - Present the task list to the user
 - Ask: "Task breakdown look right? Ready to start implementation?" — wait for approval
 - (You do this stage yourself — no routing instruction needed)
