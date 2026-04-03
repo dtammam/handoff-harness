@@ -29,6 +29,7 @@ compute_sha256() {
 get_category() {
   local filepath="$1"
   case "$filepath" in
+    .harness/*)                           echo "harness-owned" ;;
     scripts/*)                            echo "harness-owned" ;;
     hooks/*)                              echo "harness-owned" ;;
     .claude/agents/*)                     echo "harness-owned" ;;
@@ -60,6 +61,20 @@ get_manifest_version() {
   local manifest="$1"
   grep '"harness_version"' "$manifest" \
     | sed 's/.*"harness_version"[[:space:]]*:[[:space:]]*"//; s/".*//'
+}
+
+cleanup_stale_sidecars() {
+  local target="$1"
+  local stale_sidecars
+  stale_sidecars="$(find "$target" -name "*.harness-update" -type f 2>/dev/null)"
+  if [ -n "$stale_sidecars" ]; then
+    local stale_count
+    stale_count="$(echo "$stale_sidecars" | wc -l | tr -d ' ')"
+    echo "$stale_sidecars" | while IFS= read -r stale_file; do
+      rm -f "$stale_file"
+    done
+    echo "Cleaned up $stale_count stale .harness-update file(s) from previous run."
+  fi
 }
 
 REPO="https://github.com/dtammam/handoff-harness.git"
@@ -96,8 +111,20 @@ if $UPDATE; then
   # Step 1: Derive remote version from Git tag
   REMOTE_VERSION="$(cd "$HARNESS_TMPDIR/handoff-harness" && git describe --tags --abbrev=0 2>/dev/null || echo "dev")"
 
+  # Step 1.5: Migrate old manifest if present
+  OLD_MANIFEST="$TARGET/.harness-manifest.json"
+  if [ -f "$OLD_MANIFEST" ]; then
+    ARCHIVE_DATE="$(date +%Y-%m-%d)"
+    mv "$OLD_MANIFEST" "${OLD_MANIFEST}.${ARCHIVE_DATE}.bak"
+    echo "Migrating manifest: archived .harness-manifest.json as .harness-manifest.json.${ARCHIVE_DATE}.bak"
+    mkdir -p "$TARGET/.harness"
+  fi
+
+  # Step 1.6: Clean up stale sidecars from previous runs
+  cleanup_stale_sidecars "$TARGET"
+
   # Step 2: Read local version from manifest
-  MANIFEST="$TARGET/.harness-manifest.json"
+  MANIFEST="$TARGET/.harness/manifest.json"
   if [ -f "$MANIFEST" ]; then
     LOCAL_VERSION="$(get_manifest_version "$MANIFEST")"
   else
@@ -112,7 +139,6 @@ if $UPDATE; then
   fi
 
   # Step 4: Read existing manifest
-  MANIFEST="$TARGET/.harness-manifest.json"
   MANIFEST_MISSING=false
   if [ ! -f "$MANIFEST" ]; then
     MANIFEST_MISSING=true
@@ -185,7 +211,7 @@ if $UPDATE; then
   chmod +x "$TARGET/.claude/hooks/"*.sh 2>/dev/null || true
   chmod +x "$TARGET/setup.sh" 2>/dev/null || true
 
-  # Step 9: Generate new .harness-manifest.json
+  # Step 9: Generate new .harness/manifest.json
   HARNESS_VERSION="$REMOTE_VERSION"
   INSTALLED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
   MANIFEST_TMP="$(mktemp)"
@@ -214,7 +240,8 @@ if $UPDATE; then
   printf '\n  }\n' >> "$MANIFEST_TMP"
   printf '}\n' >> "$MANIFEST_TMP"
 
-  mv "$MANIFEST_TMP" "$TARGET/.harness-manifest.json"
+  mkdir -p "$TARGET/.harness"
+  mv "$MANIFEST_TMP" "$TARGET/.harness/manifest.json"
 
   # Step 10: Cleanup
   rm -rf "$HARNESS_TMPDIR"
@@ -277,6 +304,8 @@ else
   echo "Hydrating handoff-harness into $TARGET..."
   merge_list=""
   merged=0
+  # Clean up stale sidecars from previous runs
+  cleanup_stale_sidecars "$TARGET"
   for file in $PACK_FILES; do
     clean_path="${file#./}"
     src="$HARNESS_TMPDIR/handoff-harness/src/$file"
@@ -338,7 +367,8 @@ else
   printf '\n  }\n' >> "$MANIFEST_TMP"
   printf '}\n' >> "$MANIFEST_TMP"
 
-  mv "$MANIFEST_TMP" "$TARGET/.harness-manifest.json"
+  mkdir -p "$TARGET/.harness"
+  mv "$MANIFEST_TMP" "$TARGET/.harness/manifest.json"
 
   # Cleanup
   rm -rf "$HARNESS_TMPDIR"
