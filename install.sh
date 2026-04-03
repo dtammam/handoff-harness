@@ -29,7 +29,6 @@ compute_sha256() {
 get_category() {
   local filepath="$1"
   case "$filepath" in
-    VERSION)                              echo "harness-owned" ;;
     scripts/*)                            echo "harness-owned" ;;
     hooks/*)                              echo "harness-owned" ;;
     .claude/agents/*)                     echo "harness-owned" ;;
@@ -57,9 +56,15 @@ get_manifest_checksum() {
     | sed 's/.*"checksum"[[:space:]]*:[[:space:]]*"//; s/".*//'
 }
 
+get_manifest_version() {
+  local manifest="$1"
+  grep '"harness_version"' "$manifest" \
+    | sed 's/.*"harness_version"[[:space:]]*:[[:space:]]*"//; s/".*//'
+}
+
 REPO="https://github.com/dtammam/handoff-harness.git"
 BRANCH="main"
-TMPDIR="$(mktemp -d)"
+HARNESS_TMPDIR="$(mktemp -d)"
 TARGET="$(pwd)"
 UPDATE=false
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
@@ -81,25 +86,20 @@ echo ""
 
 # Clone the repo
 echo "Fetching handoff-harness..."
-git clone --depth 1 --branch "$BRANCH" "$REPO" "$TMPDIR/handoff-harness" 2>/dev/null
+git clone --depth 1 --branch "$BRANCH" "$REPO" "$HARNESS_TMPDIR/handoff-harness" 2>/dev/null
 echo "Done."
 echo ""
 
 if $UPDATE; then
   # === UPDATE FLOW ===
 
-  # Step 1: Read remote VERSION
-  if [ -f "$TMPDIR/handoff-harness/src/VERSION" ]; then
-    REMOTE_VERSION="$(cat "$TMPDIR/handoff-harness/src/VERSION" | tr -d '[:space:]')"
-  else
-    echo "ERROR: Remote VERSION file not found. The remote repository may be corrupted."
-    rm -rf "$TMPDIR"
-    exit 1
-  fi
+  # Step 1: Derive remote version from Git tag
+  REMOTE_VERSION="$(cd "$HARNESS_TMPDIR/handoff-harness" && git describe --tags --abbrev=0 2>/dev/null || echo "dev")"
 
-  # Step 2: Read local VERSION
-  if [ -f "$TARGET/VERSION" ]; then
-    LOCAL_VERSION="$(cat "$TARGET/VERSION" | tr -d '[:space:]')"
+  # Step 2: Read local version from manifest
+  MANIFEST="$TARGET/.harness-manifest.json"
+  if [ -f "$MANIFEST" ]; then
+    LOCAL_VERSION="$(get_manifest_version "$MANIFEST")"
   else
     LOCAL_VERSION="(unknown)"
   fi
@@ -107,7 +107,7 @@ if $UPDATE; then
   # Step 3: Version comparison (early exit)
   if [ "$LOCAL_VERSION" != "(unknown)" ] && [ "$LOCAL_VERSION" = "$REMOTE_VERSION" ]; then
     echo "Already at version $LOCAL_VERSION -- nothing to update."
-    rm -rf "$TMPDIR"
+    rm -rf "$HARNESS_TMPDIR"
     exit 0
   fi
 
@@ -119,7 +119,7 @@ if $UPDATE; then
   fi
 
   # Step 5: Enumerate remote files
-  PACK_FILES=$(cd "$TMPDIR/handoff-harness/src" && find . \
+  PACK_FILES=$(cd "$HARNESS_TMPDIR/handoff-harness/src" && find . \
     -not -path './.git/*' \
     -not -path './.git' \
     -not -name '.' \
@@ -135,7 +135,7 @@ if $UPDATE; then
   for file in $PACK_FILES; do
     clean_path="${file#./}"
     category="$(get_category "$clean_path")"
-    src="$TMPDIR/handoff-harness/src/$file"
+    src="$HARNESS_TMPDIR/handoff-harness/src/$file"
     dest="$TARGET/$clean_path"
 
     case "$category" in
@@ -217,7 +217,7 @@ if $UPDATE; then
   mv "$MANIFEST_TMP" "$TARGET/.harness-manifest.json"
 
   # Step 10: Cleanup
-  rm -rf "$TMPDIR"
+  rm -rf "$HARNESS_TMPDIR"
 
   # Step 11: Print changelog summary
   echo ""
@@ -242,7 +242,7 @@ else
   # === FRESH INSTALL FLOW ===
 
   # Files to copy (relative to src/)
-  PACK_FILES=$(cd "$TMPDIR/handoff-harness/src" && find . \
+  PACK_FILES=$(cd "$HARNESS_TMPDIR/handoff-harness/src" && find . \
     -not -path './.git/*' \
     -not -path './.git' \
     -not -name '.' \
@@ -279,7 +279,7 @@ else
   merged=0
   for file in $PACK_FILES; do
     clean_path="${file#./}"
-    src="$TMPDIR/handoff-harness/src/$file"
+    src="$HARNESS_TMPDIR/handoff-harness/src/$file"
     dest="$TARGET/$clean_path"
     category="$(get_category "$clean_path")"
     mkdir -p "$(dirname "$dest")"
@@ -310,7 +310,7 @@ else
   chmod +x "$TARGET/setup.sh" 2>/dev/null || true
 
   # Generate manifest
-  HARNESS_VERSION="$(cat "$TARGET/VERSION" | tr -d '[:space:]')"
+  HARNESS_VERSION="$(cd "$HARNESS_TMPDIR/handoff-harness" && git describe --tags --abbrev=0 2>/dev/null || echo "dev")"
   INSTALLED_AT="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
   MANIFEST_TMP="$(mktemp)"
 
@@ -341,7 +341,7 @@ else
   mv "$MANIFEST_TMP" "$TARGET/.harness-manifest.json"
 
   # Cleanup
-  rm -rf "$TMPDIR"
+  rm -rf "$HARNESS_TMPDIR"
 
   echo "Done. $(echo "$PACK_FILES" | wc -l | tr -d ' ') files hydrated."
   if [ "$merged" -gt 0 ]; then

@@ -1,1 +1,38 @@
-{}
+{
+  "feature_name": "remove-version-relocate-manifest",
+  "stage": "implementation",
+  "tasks": [
+    {
+      "id": "T1",
+      "description": "TMPDIR rename: mechanical find-and-replace of all TMPDIR occurrences in install.sh to HARNESS_TMPDIR. Pure rename, no behavioral change. 12 occurrences total (see Reference Sweep Checklist in exec plan). After completion, grep TMPDIR install.sh must return zero matches and grep HARNESS_TMPDIR must return matches for all 12 sites.",
+      "status": "verified",
+      "artifacts": ["install.sh"],
+      "notes": "Already completed in prior commit -- all 12 TMPDIR occurrences renamed to HARNESS_TMPDIR, verified by grep."
+    },
+    {
+      "id": "T2",
+      "description": "VERSION removal and version derivation: (1) git rm VERSION and src/VERSION, (2) add get_manifest_version() helper function after get_manifest_checksum() in install.sh, (3) replace VERSION file reads in both update flow and fresh-install flow with Git tag derivation via git describe --tags --abbrev=0 with dev fallback, (4) remove the VERSION) case arm from get_category(), (5) replace the local VERSION read in the update flow Step 2 with manifest-based version read using get_manifest_version(). Covers R-1, R-4.1-R-4.3 version derivation parts.",
+      "status": "in-progress",
+      "artifacts": ["install.sh", "VERSION", "src/VERSION"]
+    },
+    {
+      "id": "T3",
+      "description": "Manifest relocation, migration, and sidecar cleanup: (1) update all manifest paths from .harness-manifest.json to .harness/manifest.json in install.sh (update flow Step 4/Step 9, fresh-install flow line 341), (2) add mkdir -p $TARGET/.harness before manifest writes, (3) add migration block (Step 1.5) to archive old .harness-manifest.json as .bak during updates, (4) add .harness/*) case arm to get_category() returning harness-owned, (5) add cleanup_stale_sidecars() helper function and call it in both update flow (after Step 1.5) and fresh-install flow (before per-file copy loop). Covers R-2, R-7.",
+      "status": "pending",
+      "artifacts": ["install.sh"]
+    },
+    {
+      "id": "T4",
+      "description": "Reference sweep and tech debt cleanup: (1) run exhaustive grep for VERSION (file-path context), .harness-manifest.json, and TMPDIR across entire repo excluding docs/exec-plans/completed/ and fix any remaining references, (2) verify seed.md parity (both live and src/ versions), (3) move NB-1 from Active to Closed in docs/exec-plans/tech-debt-tracker.md with resolution text, (4) confirm docs/exec-plans/active/readme-improvements.md is absent, (5) run all AC-3 and AC-4 grep checks to verify zero stale references. Covers R-3, R-4.5, R-5, R-6.",
+      "status": "pending",
+      "artifacts": ["docs/exec-plans/tech-debt-tracker.md"]
+    }
+  ],
+  "exec_plan": "docs/exec-plans/active/remove-version-relocate-manifest.md",
+  "created_at": "2026-04-02T00:00:00Z",
+  "bundled_tech_debt": ["NB-1: TMPDIR shadowing in install.sh"],
+  "cleanup_notes": [
+    "Removed stale untracked file docs/exec-plans/active/readme-improvements.md -- the completed copy already exists at docs/exec-plans/completed/readme-improvements.md"
+  ],
+  "updated_at": "2026-04-03T12:00:00Z"
+}
