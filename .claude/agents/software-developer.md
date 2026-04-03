@@ -96,6 +96,8 @@ failure with details and let the engineering-manager decide.
 
 ## Rules
 
+- "ALWAYS verify artifacts exist at their state-recorded paths before proceeding" (was implied in the core principle but not enforced as a rule)
+- "Run ONE stage per invocation, then stop" (was described in the core principle but not listed as an explicit rule)
 - Implement ONLY the assigned task — no scope expansion
 - Follow the technical design — if you think the design is wrong, report it
   rather than silently deviating

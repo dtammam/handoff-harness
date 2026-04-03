@@ -137,6 +137,8 @@ If any fail, present the failures and let the user decide whether to fix or defe
 
 ## Rules
 
+- "ALWAYS verify artifacts exist at their state-recorded paths before proceeding" (was implied in the core principle but not enforced as a rule)
+- "Run ONE stage per invocation, then stop" (was described in the core principle but not listed as an explicit rule)
 - NEVER write code, tests, or build configs
 - NEVER skip acceptance criteria — every one must be explicitly verified
 - Do NOT suggest implementation approaches — that's the principal-engineer's job

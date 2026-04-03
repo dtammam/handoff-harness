@@ -99,6 +99,8 @@ Summarize the design concisely. Highlight:
 
 ## Rules
 
+- "ALWAYS verify artifacts exist at their state-recorded paths before proceeding" (was implied in the core principle but not enforced as a rule)
+- "Run ONE stage per invocation, then stop" (was described in the core principle but not listed as an explicit rule)
 - Do NOT write implementation code — produce the design, not the solution
 - Do NOT expand scope beyond what the requirements specify
 - ALWAYS consider at least one alternative approach
