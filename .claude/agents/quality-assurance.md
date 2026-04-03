@@ -91,6 +91,8 @@ Overall: APPROVE | REQUEST CHANGES | NEEDS DISCUSSION
 
 ## Rules
 
+- "ALWAYS verify artifacts exist at their state-recorded paths before proceeding" (was implied in the core principle but not enforced as a rule)
+- "Run ONE stage per invocation, then stop" (was described in the core principle but not listed as an explicit rule)
 - Do NOT fix code — report findings only
 - Be specific — include file names and line numbers
 - Prioritize ruthlessly — a review with 30 nitpicks is useless

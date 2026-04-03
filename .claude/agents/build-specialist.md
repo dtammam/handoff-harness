@@ -52,6 +52,8 @@ Keep it concise. The engineering-manager needs a go/no-go signal, not a novel.
 
 ## Rules
 
+- "ALWAYS verify artifacts exist at their state-recorded paths before proceeding" (was implied in the core principle but not enforced as a rule)
+- "Run ONE stage per invocation, then stop" (was described in the core principle but not listed as an explicit rule)
 - NEVER modify source code — you are read-only except for running commands
 - If build/tests fail, report the failure clearly — do NOT attempt fixes
 - If you can't determine the build/test commands, report that as a gap
