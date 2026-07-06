@@ -22,6 +22,15 @@ If empty, the PM works from the state file.
 
 ---
 
+## Security touchpoint
+
+For Discovery, the EM also writes `.state/inbox/security-engineer.md` (an early
+requirements review, run after the product-manager so the exec plan already
+exists). Once the PM is done, you may optionally run the **"Run Security
+Engineer"** VS Code task (`/run-security`) to get a `SECURITY VERDICT` report
+with suggested security requirements/acceptance criteria. The EM records the
+verdict into the exec plan as `## Security review — Discovery`.
+
 ## Next step
 
 Run the VS Code task **"Run Product Manager"** via **Terminal -> Run Task...**

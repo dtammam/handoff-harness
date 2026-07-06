@@ -121,6 +121,20 @@ Bootstrap → Discovery → Design → Tasks → Implementation → Verification
   - Cross-check: nothing in out-of-scope may conflict with CONTRIBUTING.md mandatory standards
   - Write exec plan to `docs/exec-plans/active/YYYY-MM-DD-<feature-slug>.md`
   - Update state file: set `artifacts.requirements` and `artifacts.exec_plan` to the file path
+- After the product-manager has drafted the exec plan, also write an inbox file for
+  **security-engineer** at `.state/inbox/security-engineer.md` for an *early
+  requirements review* (run it after the PM, not in parallel, so it isn't racing the
+  not-yet-existing exec plan):
+  - State the phase as `Discovery` in the inbox so the agent runs in its
+    early-review mode
+  - The agent reads: the active exec plan, `.state/feature-state.json`,
+    `docs/CONTRIBUTING.md`, `docs/ARCHITECTURE.md`, `docs/RELIABILITY.md`
+  - The agent is strictly read-only — it prints a `SECURITY VERDICT` report with
+    suggested security requirements/acceptance criteria and writes nothing
+  - You record the returned verdict and findings into the exec plan yourself, as a
+    `## Security review — Discovery` section (exactly as you record QA's outcome),
+    then let the human/PM fold accepted items into requirements
+  - This does NOT advance `stage` — the existing approval gate is unchanged
 - Tell user to invoke the product-manager agent
 - Tell user: when PM is done, run `/prep-pe-design`
 
@@ -136,6 +150,21 @@ Bootstrap → Discovery → Design → Tasks → Implementation → Verification
     data model impact, risks, alternatives considered
   - Update `docs/ARCHITECTURE.md` if new components are introduced
   - Update state file: set `artifacts.design` to the exec plan path
+- After the principal-engineer has drafted the Design section, also write an inbox
+  file for **security-engineer** at `.state/inbox/security-engineer.md` for an
+  *early design review*:
+  - State the phase as `Design` in the inbox so the agent runs in its early-review
+    mode
+  - The agent reads: the active exec plan (including the new Design section),
+    `.state/feature-state.json`, `docs/CONTRIBUTING.md`, `docs/ARCHITECTURE.md`,
+    `docs/RELIABILITY.md`
+  - The agent is strictly read-only — it prints a `SECURITY VERDICT` report (a
+    threat model of the proposed approach plus suggested security design
+    constraints) and writes nothing
+  - You record the returned verdict and findings into the exec plan yourself, as a
+    `## Security review — Design` section, then let the human/PE fold accepted
+    constraints into the design
+  - This does NOT advance `stage` — the existing approval gate is unchanged
 - Tell user to invoke the principal-engineer agent
 - Tell user: when PE is done, run `/prep-em-tasks`
 
@@ -189,6 +218,22 @@ Bootstrap → Discovery → Design → Tasks → Implementation → Verification
   - Review each file for correctness, security, performance, and standards compliance
   - Report findings as CRITICAL / WARNING / SUGGESTION with file:line references
   - Give an overall verdict: APPROVE, REQUEST CHANGES, or NEEDS DISCUSSION
+- After the QA pass, also write an inbox file for **security-engineer** at
+  `.state/inbox/security-engineer.md` for the *late diff audit*:
+  - State the phase as `Implementation` in the inbox so the agent runs in its
+    late-audit mode
+  - The agent reads: the active exec plan, `.state/feature-state.json`,
+    `docs/CONTRIBUTING.md`, `docs/ARCHITECTURE.md`, `docs/RELIABILITY.md`, and
+    `git diff main` to see the full implemented change
+  - The agent is strictly read-only — it prints findings plus a top-line
+    `SECURITY VERDICT` report and writes nothing
+  - You record the returned verdict and findings into the exec plan yourself, as a
+    `## Security review — Implementation` section
+  - This does NOT advance `stage`. A `FAIL — BLOCKED` verdict is a
+    **human-enforced hard gate before Acceptance** (it must be resolved, or
+    explicitly risk-accepted by the maintainer, before `/prep-pm-accept`) — the
+    agent itself does not auto-advance or auto-block `stage`; the human enforces
+    the gate
 - Tell user to invoke the quality-assurance agent
 - Tell user: when QA is done:
   - If APPROVE → run `/prep-pm-accept`
@@ -230,3 +275,6 @@ Bootstrap → Discovery → Design → Tasks → Implementation → Verification
 - If the user wants to abort, update state with a note and set stage to "aborted"
 - Read `docs/CONTRIBUTING.md` for project coding standards before delegating
 - Read `docs/ARCHITECTURE.md` for system context before delegating
+- The security-engineer is advisory only: strictly read-only, never writes any
+  file, and never advances a stage — a `FAIL — BLOCKED` verdict is a
+  human-enforced gate before Acceptance, not an automatic block

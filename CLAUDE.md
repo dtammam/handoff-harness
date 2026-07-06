@@ -34,6 +34,7 @@ engineering-manager's job. Invoke it instead.
 | `software-developer` | Implementation | Implementation stage (per task) |
 | `build-specialist` | Build & test runner | After each implementation task |
 | `quality-assurance` | Code review | Optional, before acceptance |
+| `security-engineer` | Security review (advisory) | Early (Discovery & Design) and after QA |
 
 ### Commands (`.claude/commands/`)
 
@@ -48,6 +49,7 @@ engineering-manager's job. Invoke it instead.
 | `/run-sde` | Invoke software-developer (mobile workflow) |
 | `/run-build` | Invoke build-specialist (mobile workflow) |
 | `/run-qa` | Invoke quality-assurance (mobile workflow) |
+| `/run-security` | Invoke security-engineer (mobile workflow) |
 | `/show-me` | Read-only pipeline status report |
 | `/seed` | One-shot project onboarding and placeholder filling |
 | `/prep-pm-discover` | Prep Discovery -- route to Product Manager |

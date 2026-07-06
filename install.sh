@@ -166,7 +166,15 @@ if $UPDATE; then
 
     case "$category" in
       scaffold)
-        skipped=$((skipped + 1))
+        if [ ! -f "$dest" ]; then
+          # Net-new scaffold file (e.g. added in a later release) -- copy it in.
+          mkdir -p "$(dirname "$dest")"
+          cp "$src" "$dest"
+          updated=$((updated + 1))
+        else
+          # Scaffold file already exists locally -- preserve it untouched.
+          skipped=$((skipped + 1))
+        fi
         ;;
       harness-owned)
         mkdir -p "$(dirname "$dest")"
@@ -264,6 +272,20 @@ if $UPDATE; then
     done
     echo ""
   fi
+
+  # Step 12.1: Targeted note when CLAUDE.md needed a manual merge
+  case " $merge_list " in
+    *" CLAUDE.md "*)
+      echo "NOTE: CLAUDE.md was customized here, so the new 'security-engineer'"
+      echo "agent-table row and the '/run-security' command-table row could not be"
+      echo "applied automatically. The security-engineer agent is already fully wired"
+      echo "and operational (agent file, run script, command, and engineering-manager"
+      echo "routing were updated automatically); only the CLAUDE.md documentation lags."
+      echo "To finish: copy the 'security-engineer' and '/run-security' rows from"
+      echo "CLAUDE.md.harness-update into your CLAUDE.md, then delete the sidecar."
+      echo ""
+      ;;
+  esac
 
 else
   # === FRESH INSTALL FLOW ===

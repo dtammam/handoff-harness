@@ -33,6 +33,15 @@ $ARGUMENTS is not typically needed. Can include "focus on security" or similar g
 
 ---
 
+## Security touchpoint
+
+For Review, the EM also writes `.state/inbox/security-engineer.md` (a late diff
+audit over `git diff main`, run after the QA pass). Once QA is done, you may
+optionally run the **"Run Security Engineer"** VS Code task (`/run-security`)
+to get findings plus a top-line `SECURITY VERDICT`. The EM records the verdict
+into the exec plan as `## Security review — Implementation`. A `FAIL — BLOCKED`
+verdict is a human-enforced hard gate before Acceptance.
+
 ## Next step
 
 Run the VS Code task **"Run Quality Assurance"** via **Terminal -> Run Task...**

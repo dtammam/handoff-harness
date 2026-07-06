@@ -22,6 +22,15 @@ from the exec plan and codebase.
 
 ---
 
+## Security touchpoint
+
+For Design, the EM also writes `.state/inbox/security-engineer.md` (an early
+design review, run after the principal-engineer drafts the Design section).
+Once the PE is done, you may optionally run the **"Run Security Engineer"**
+VS Code task (`/run-security`) to get a `SECURITY VERDICT` report — a threat
+model of the proposed approach plus suggested security design constraints.
+The EM records the verdict into the exec plan as `## Security review — Design`.
+
 ## Next step
 
 Run the VS Code task **"Run Principal Engineer"** via **Terminal -> Run Task...**
