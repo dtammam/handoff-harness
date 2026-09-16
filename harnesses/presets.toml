@@ -1,0 +1,21 @@
+# presets.toml — "lean vs standard" at install time.
+#
+# A preset is a bundle of DEFAULTS, not a file tree. Both presets install the
+# same core/ (same seats, same flow, same scrutiny, same markers); they differ
+# only in the anchor/involvement written into .harness/harness.toml [defaults].
+# The installer shows `label` + `blurb` at the prompt and applies the rest.
+
+[lean]
+label       = "Lean — outcome-anchored"
+blurb       = "Fast iteration, frequent merges; you're the arbiter and okay with breaking things. The session builds against inferred acceptance, then the gate proves it. Approve scope in, verify result out."
+anchor      = "outcome"
+involvement = "interactive"
+
+[standard]
+label       = "Standard — spec-anchored (PDD)"
+blurb       = "A serious, long-lived project. Decision register, approved design, plan, then build — a human gate at each phase. 'Correct' is a written contract."
+anchor      = "spec"
+involvement = "interactive"
+
+# Note: the adversarial gate and the security layer are in BOTH presets. The
+# preset changes the up-front rigor, never whether work is refuted before it ships.

@@ -8,6 +8,5 @@ Thumbs.db
 *.swp
 *.swo
 
-# Don't ignore .state — it's part of the pipeline
-# But do ignore inbox files (ephemeral, per-session)
-.state/inbox/*.md
+# Harness update sidecars (region-ownership fallback path)
+*.harness-update
