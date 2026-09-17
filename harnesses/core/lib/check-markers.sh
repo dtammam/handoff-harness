@@ -39,20 +39,22 @@ while IFS= read -r file; do
     fi
   fi
 
-  # 2 & 3. Bound markers (@<sha>) — must exist and match current content.
-  #        Match lines carrying an approval/gate/design/readiness marker + @sha.
+  # 2 & 3. Approval markers (@<sha>): the sha must exist, and the reviewed CODE
+  #        must not have changed since it. The plans dir is EXCLUDED from the
+  #        diff, so a plan's own bookkeeping (status update, sibling markers,
+  #        moving to completed/) never invalidates a still-valid approval. Only
+  #        approval markers are checked — a `Gate: CHANGES` line is history.
   while IFS= read -r line; do
     sha="$(printf '%s' "$line" | grep -oE '@[0-9a-f]{7,40}' | head -n1 | tr -d '@')"
     [ -n "$sha" ] || continue
     if ! git cat-file -e "${sha}^{commit}" 2>/dev/null; then
-      flag "$file" "$line" "bound marker references unknown commit @$sha"
+      flag "$file" "$line" "approval marker references unknown commit @$sha"
       continue
     fi
-    # File changed since the approved sha => approval no longer describes content.
-    if ! git diff --quiet "$sha" -- "$file" 2>/dev/null; then
-      flag "$file" "$line" "stale approval: '$sha' predates changes to this file — re-confirm"
+    if ! git diff --quiet "$sha" -- . ":(exclude)$PLANS_DIR" 2>/dev/null; then
+      flag "$file" "$line" "stale approval @$sha — reviewed code changed since; re-gate"
     fi
-  done < <(grep -En '(Approved|APPROVED|Gate:|Design:|Readiness)[^@]*@[0-9a-f]{7,40}' "$file" 2>/dev/null || true)
+  done < <(grep -En '(Approved|APPROVED)[^@]*@[0-9a-f]{7,40}' "$file" 2>/dev/null || true)
 
 done < <(find "$PLANS_DIR" -type f -name '*.md' 2>/dev/null | sort)
 

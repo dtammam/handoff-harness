@@ -7,6 +7,12 @@ degrade into the builder reviewing itself.
 
 ## The contract
 
+**Precondition — the work is committed.** The verdict binds to a commit sha and
+the seats mutate against a committed tree, so commit the work (a WIP commit is
+fine) before gating; the reviewed `<sha>` is `HEAD`. A fix in the loop is a *new*
+commit, re-gated — never rewrite the approved commit, which would void the bound
+verdict.
+
 1. **Seat selection.** Evaluate `.harness/scrutiny.toml` against `git diff --name-only`
    (+ change class). The Adversary is always in the set. QA and Security-brief
    are added by the table; `force` rows union in and cannot be dropped. The

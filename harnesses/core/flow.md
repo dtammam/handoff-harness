@@ -47,11 +47,18 @@ public interface, a data model, an acceptance criterion, or user-visible
 behavior halts and returns to the user, whatever the involvement setting** — the
 approval covered the design as written.
 
+**Commit the work before gating** (staged by name; a WIP/checkpoint commit is
+fine). The gate binds its verdict to a commit sha, and the reviewers mutate
+against a committed tree — so a real commit must exist before Phase 4. This
+commit is what ships; do not rewrite it after approval (that would void the
+bound verdict). A fix in the gate's fix loop is a *new* commit, re-gated.
+
 ## Phase 4 — Gate  *(always)*
 
-Run the gate protocol (`.harness/lib/gate-protocol.md`). Seats are set by `.harness/scrutiny.toml`
-against the diff — never by your judgment; you may only escalate. Each seat
-writes `Gate: <verdict> r<n> @<sha> — <seat>`.
+Run the gate protocol (`.harness/lib/gate-protocol.md`) against the committed
+work — `<sha>` is `HEAD`. Seats are set by `.harness/scrutiny.toml` against the
+diff — never by your judgment; you may only escalate. Each seat writes
+`Gate: <verdict> r<n> @<sha> — <seat>`.
 
 **The fix loop:** on `CHANGES`, fix, then re-engage the **same seat instances**
 for a delta re-review; they re-verify their findings (and their own
@@ -63,9 +70,12 @@ required seat is `APPROVED` at the same final sha. Never self-merge.
 - **outcome:** you verify the result yourself.
 - **spec / tdd:** verify against the acceptance criteria / the tests.
 
-Then: update the plan's status marker (`Shipped <version>` and move the doc to
-`completed/`), commit staged-by-name, and run any release ceremony. Run
-`.harness/lib/check-markers.sh` before push — a stale approval never leaves the machine.
+The work is already committed and gated (Phase 3/4). Now close it out: set the
+plan's status to `Shipped <version>`, move the doc to `completed/`, and commit
+that **as its own bookkeeping commit** — it touches only the plan doc, so it
+does not change the reviewed code and the approval stays valid. Then run any
+release ceremony and push. Run `.harness/lib/check-markers.sh` before push — a
+stale approval never leaves the machine.
 
 ## The shape, at a glance
 

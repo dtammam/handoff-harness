@@ -72,11 +72,23 @@ Gate: CHANGES r1 @a19c4d0 — adversary (see findings below)
 `.harness/lib/check-markers.sh` flags, and exits non-zero on:
 
 1. A terminal `status:` (`Shipped`, `Abandoned`) on a doc still under `active/`.
-2. A bound marker (`@<sha>`) whose `<sha>` is not in history.
-3. A bound marker whose file has changed since `<sha>` — the approval no longer
-   describes the content next to it.
-4. A `Gate: APPROVED` at a sha older than the latest change to the plan's code.
+2. An approval marker (`@<sha>`) whose `<sha>` is not in history.
+3. An `Approved` / `Gate: APPROVED @<sha>` where the reviewed CODE has changed
+   since `<sha>`. The plans dir is EXCLUDED from this diff, so a plan's own
+   bookkeeping (status update, sibling markers, moving to `completed/`) never
+   invalidates a still-valid approval. `Gate: CHANGES` lines are history and are
+   not checked.
 
 Run it from the SessionStart hook (so a resumed session sees the true state) and
 from `pre-push` (so stale approvals never leave the machine).
+
+## Conventions that keep this honest
+
+- **Commit before gating.** A bound verdict needs a real commit sha, so gate the
+  committed work (a WIP commit is fine); the fix loop adds new commits rather
+  than rewriting the approved one.
+- **One piece, one plan doc.** A piece of work carries its bound markers in its
+  own plan doc. An umbrella / roadmap doc holds status *pointers* — prose and
+  links to the per-piece plans — never its own bound `Gate:` / `Approved`
+  markers, so one piece's edits never touch another's approval.
 <!-- harness:region:end id=doc -->

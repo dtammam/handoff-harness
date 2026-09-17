@@ -20,6 +20,6 @@ echo "handoff-harness: fetching ($BRANCH)…"
 git clone --depth 1 --branch "$BRANCH" "$REPO" "$TMP/hh" >/dev/null 2>&1
 
 exec bash "$TMP/hh/harnesses/install.sh" \
-  --source "$TMP/hh/harnesses" \
-  --target "$(pwd)" \
+  --source="$TMP/hh/harnesses" \
+  --target="$(pwd)" \
   "$@"

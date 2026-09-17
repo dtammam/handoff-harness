@@ -49,13 +49,16 @@ for one before proceeding.
    - **spec / tdd:** a decision register — IDs with a recommendation and
      rationale, ordered by blast radius (data models & interfaces first).
 
-5. **Write the plan doc** under `docs/exec-plans/active/<yyyy-mm-dd>-<plan>.md`,
-   where `<plan>` is a kebab id that matches the branch name. Open it with the
-   bound status block from `.harness/lib/harness-markers.md`:
+5. **Write the plan doc** under `docs/exec-plans/active/<YYYY-MM-DD>-<slug>.md`,
+   where `<slug>` is a kebab id that matches the branch name — the same location
+   and titling the old harness used, so a repo's plan history stays unbroken.
+   Open it with the bound status block from `.harness/lib/harness-markers.md`,
+   reading `<flavor>` from `.harness/harness.toml`:
 
    ```yaml
    ---
-   plan: <kebab-name>
+   plan: <kebab-slug>
+   harness: v2 · <flavor>
    anchor: outcome|spec|tdd
    status: Draft
    gate: pending
