@@ -12,6 +12,14 @@ work** — the gate is the independence.
 `$ARGUMENTS` = optional base ref to diff against. Default the base to
 `git merge-base HEAD <default-branch>` (the branch point).
 
+## Precondition — commit first
+
+The work must be committed before gating: verdicts bind to a commit sha and the
+seats mutate against a committed tree. If the tree is dirty, commit it (a WIP
+commit is fine) — the reviewed sha is `HEAD`. Never gate a staged-but-uncommitted
+diff, and never rewrite the approved commit afterward; a fix is a new commit,
+re-gated.
+
 ## Procedure
 
 1. **Select the seats from the table, not from judgment.** Compute the diff and
