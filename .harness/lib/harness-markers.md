@@ -17,22 +17,29 @@ plan: <kebab-name>          # stable id; matches the branch name
 harness: v2 · <flavor>      # which harness style produced this plan (from .harness/harness.toml)
 anchor: outcome|spec|tdd    # the acceptance dial for this work
 status: <lifecycle-state>   # from the closed set below
+next: <one line>            # resume point — the very next concrete action (a cold session reads this first)
 design: Approved <date> @<sha>     # present once design is approved (spec/tdd)
 gate: <verdict>                    # see gate line below; "pending" until gated
 ---
 ```
 
-## Location & naming (continuity with v1)
+## Location, naming, and shape
 
-Plans live where they always have — this is deliberate, so a repo that used the
-old harness keeps one unbroken history:
+A piece of work is a **directory**, not a single file — so nothing goes stale as
+one giant scroll. Same parent dirs as always, for unbroken history:
 
-- `docs/exec-plans/active/YYYY-MM-DD-<slug>.md` while in flight (`<slug>` matches
-  the branch name), moving to `docs/exec-plans/completed/` when `Shipped`.
+- `docs/exec-plans/active/YYYY-MM-DD-<slug>/` while in flight (`<slug>` matches
+  the branch name); the whole directory moves to `docs/exec-plans/completed/`
+  when `Shipped`.
+- Inside it: `plan.md` is the spine (status block + acceptance + progress +
+  `next:`). Anchor-scaled siblings: `research/*.md` (cited findings, only when
+  the work warrants) and `design.md` (spec/tdd; self-contained, fixed sections).
+  `outcome` work is often just `plan.md`.
 - `docs/exec-plans/tech-debt-tracker.md` is unchanged.
 
-The `harness:` header is the one addition: it tells a mixed repo which style
-produced each plan. v1 plans simply have no `harness:` line; v2 plans carry it.
+The `harness:` header tells a mixed repo which style produced each plan; the
+`next:` line is the one-line resume point a cold session reads first. v1 plans
+have neither.
 
 ## Closed lifecycle vocabulary
 
@@ -87,8 +94,12 @@ from `pre-push` (so stale approvals never leave the machine).
 - **Commit before gating.** A bound verdict needs a real commit sha, so gate the
   committed work (a WIP commit is fine); the fix loop adds new commits rather
   than rewriting the approved one.
-- **One piece, one plan doc.** A piece of work carries its bound markers in its
-  own plan doc. An umbrella / roadmap doc holds status *pointers* — prose and
+- **One piece, one plan directory.** A piece of work carries its bound markers in
+  its own `plan.md`. An umbrella / roadmap doc holds status *pointers* — prose and
   links to the per-piece plans — never its own bound `Gate:` / `Approved`
   markers, so one piece's edits never touch another's approval.
+- **Research is cited and can invalidate.** Findings live in `research/*.md` with
+  their sources; a finding that contradicts an approved decision is surfaced to
+  the user, never silently resolved. Write an artifact only for a decision-
+  changing finding you can't cheaply re-derive — not a log of everything read.
 <!-- harness:region:end id=doc -->

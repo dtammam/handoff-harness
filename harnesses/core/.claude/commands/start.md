@@ -49,11 +49,11 @@ for one before proceeding.
    - **spec / tdd:** a decision register — IDs with a recommendation and
      rationale, ordered by blast radius (data models & interfaces first).
 
-5. **Write the plan doc** under `docs/exec-plans/active/<YYYY-MM-DD>-<slug>.md`,
-   where `<slug>` is a kebab id that matches the branch name — the same location
-   and titling the old harness used, so a repo's plan history stays unbroken.
-   Open it with the bound status block from `.harness/lib/harness-markers.md`,
-   reading `<flavor>` from `.harness/harness.toml`:
+5. **Write the plan directory** at `docs/exec-plans/active/<YYYY-MM-DD>-<slug>/`,
+   where `<slug>` matches the branch name — the same location and titling the old
+   harness used, so a repo's plan history stays unbroken. Its spine is `plan.md`,
+   opened with the bound status block from `.harness/lib/harness-markers.md`
+   (read `<flavor>` from `.harness/harness.toml`):
 
    ```yaml
    ---
@@ -61,17 +61,22 @@ for one before proceeding.
    harness: v2 · <flavor>
    anchor: outcome|spec|tdd
    status: Draft
+   next: <one line — the very next concrete action>
    gate: pending
    ---
    ```
 
    Follow it with the restated request, the blind-spot findings, and the
    acceptance (the three bullets, or the decision register). `status: Draft`
-   because nothing is approved yet.
+   because nothing is approved yet. Research (`research/*.md`) and design
+   (`design.md`) are siblings added by later phases — do not cram them into `plan.md`.
 
-6. **Confirm once, then step back.** Show the user the anchor and the acceptance
-   and ask for approval or an override (they may override individual decision-
-   register IDs, or the anchor). Do not proceed to Phase 2 in the same breath.
+6. **Confirm once, then step back.** Show the user the anchor, the acceptance,
+   and — if the work turns on something unconfirmed (an unfamiliar API, a
+   library's real behavior, prior art, how the existing code works) — a proposed
+   research pass (Phase 1.5: cited `research/*.md` before design). Ask for
+   approval or an override (they may override individual decision-register IDs,
+   the anchor, or whether to research). Do not proceed past intake in the same breath.
 
 ## Rules
 

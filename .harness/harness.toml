@@ -4,7 +4,7 @@
 name      = "handoff-harness"
 flavor    = "lean"          # lean | standard
 version   = "dev"
-commit    = "513c256"
+commit    = "46ee8ec"
 installed = "2026-09-16"
 source    = "github.com/dtammam/handoff-harness"
 targets   = ["claude"]         # tool integrations to keep in sync, e.g. "claude", "cursor"
