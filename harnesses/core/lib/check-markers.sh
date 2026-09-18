@@ -56,7 +56,15 @@ while IFS= read -r file; do
     fi
   done < <(grep -En '(Approved|APPROVED)[^@]*@[0-9a-f]{7,40}' "$file" 2>/dev/null || true)
 
-done < <(find "$PLANS_DIR" -type f -name '*.md' 2>/dev/null | sort)
+  # 4. Sha-less approvals: a `status:`/`design: Approved` or `Gate: APPROVED`
+  #    with no @<sha> must not pass silently — it asserts approval that binds to
+  #    nothing.
+  while IFS= read -r line; do
+    printf '%s' "$line" | grep -qE '@[0-9a-f]{7,40}' && continue
+    flag "$file" "$line" "approval marker has no @<sha> — bind it to the reviewed commit"
+  done < <(grep -En '^[[:space:]]*(status|design):[[:space:]]*Approved|Gate:[[:space:]]*APPROVED' "$file" 2>/dev/null || true)
+
+done < <(find "$PLANS_DIR/active" -type f -name '*.md' 2>/dev/null | sort)
 
 if [ "$ISSUES" -eq 0 ]; then
   echo "check-markers: clean ($PLANS_DIR)"

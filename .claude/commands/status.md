@@ -14,13 +14,15 @@ state-as-document spine, it does not change it.
 
 ## Procedure
 
-1. **Find the active plan.** List `docs/exec-plans/active/*.md`. If none exists,
-   report "No active plan." and stop.
+1. **Find the active plan.** List `docs/exec-plans/active/*/plan.md` (a piece of
+   work is a directory), plus any legacy flat `docs/exec-plans/active/*.md`. If
+   none exists, report "No active plan." and stop.
 
 2. **Read the status block** of each active plan and report, from its markers:
    - `plan` (the id / branch name)
    - `anchor` (`outcome | spec | tdd`)
    - `status` (from the closed vocabulary in `.harness/lib/harness-markers.md`)
+   - `next` (the one-line resume point — the very next concrete action; lead with it)
    - `gate` and every `Gate: <verdict> r<n> @<sha> — <seat>` line, i.e. which
      required seats have APPROVED and at which sha, and which are still
      outstanding.
