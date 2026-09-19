@@ -76,15 +76,22 @@ Gate: CHANGES r1 @a19c4d0 — adversary (see findings below)
 
 ## What the checker enforces
 
-`.harness/lib/check-markers.sh` flags, and exits non-zero on:
+`.harness/lib/check-markers.sh` scans each plan's SPINE (flat `active/*.md` and
+`<slug>/plan.md` — never `research/*.md` or `design.md`) and flags, exiting
+non-zero, on:
 
-1. A terminal `status:` (`Shipped`, `Abandoned`) on a doc still under `active/`.
-2. An approval marker (`@<sha>`) whose `<sha>` is not in history.
-3. An `Approved` / `Gate: APPROVED @<sha>` where the reviewed CODE has changed
-   since `<sha>`. The plans dir is EXCLUDED from this diff, so a plan's own
-   bookkeeping (status update, sibling markers, moving to `completed/`) never
-   invalidates a still-valid approval. `Gate: CHANGES` lines are history and are
-   not checked.
+1. A terminal `status:` (`Shipped`/`Abandoned`) still under `active/` — read from
+   the **frontmatter field only**, never prose that happens to start with the word.
+2. An approval marker (`@<sha>`) whose `<sha>` is not in history, or that carries
+   no `@<sha>` at all.
+3. An `Approved` / `Gate: APPROVED @<sha>` where the reviewed CODE changed since
+   `<sha>` (the plans dir is excluded, so a plan's own bookkeeping never counts;
+   `Gate: CHANGES` lines are history and are not checked).
+4. **Merged but not released** — an active plan whose latest `Gate: APPROVED @<sha>`
+   is already an ancestor of the default branch while its status isn't terminal:
+   the work shipped and `/release` never ran.
+5. In `completed/` (checked for consistency, not staleness): a non-terminal
+   status, or a frontmatter `gate:` that contradicts the body's last `Gate:` verdict.
 
 Run it from the SessionStart hook (so a resumed session sees the true state) and
 from `pre-push` (so stale approvals never leave the machine).

@@ -97,6 +97,11 @@ required seat is `APPROVED` at the same final sha. Never self-merge.
 
 ## Phase 5 — Verify & close  *(always)*
 
+**Passing the gate and merging is not shipping.** Until `/release` runs, the plan
+still reads `Gate: APPROVED` in `active/` — wrong the moment the code lands on the
+default branch. Do not stop after the merge; close it out. (The checker flags a
+merged plan left in `active/`, but the point is to not create the drift at all.)
+
 - **outcome:** you verify the result yourself.
 - **spec / tdd:** verify against the acceptance criteria / the tests.
 
