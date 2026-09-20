@@ -49,16 +49,17 @@ for one before proceeding.
    - **spec / tdd:** a decision register — IDs with a recommendation and
      rationale, ordered by blast radius (data models & interfaces first).
 
-5. **Write the plan directory** at `docs/exec-plans/active/<YYYY-MM-DD>-<slug>/`,
+5. **Write the plan doc** at `docs/exec-plans/active/<YYYY-MM-DD>-<slug>.md`,
    where `<slug>` matches the branch name — the same location and titling the old
-   harness used, so a repo's plan history stays unbroken. Its spine is `plan.md`,
-   opened with the bound status block from `.harness/lib/harness-markers.md`
-   (read `<flavor>` from `.harness/harness.toml`):
+   harness used, so a repo's plan history stays unbroken. Open it with the bound
+   status block from `.harness/lib/harness-markers.md` (read `<flavor>` from
+   `.harness/harness.toml`, `<branch>` from `git branch --show-current`):
 
    ```yaml
    ---
    plan: <kebab-slug>
    harness: v2 · <flavor>
+   branch: <branch>
    anchor: outcome|spec|tdd
    status: Draft
    next: <one line — the very next concrete action>
@@ -68,8 +69,9 @@ for one before proceeding.
 
    Follow it with the restated request, the blind-spot findings, and the
    acceptance (the three bullets, or the decision register). `status: Draft`
-   because nothing is approved yet. Research (`research/*.md`) and design
-   (`design.md`) are siblings added by later phases — do not cram them into `plan.md`.
+   because nothing is approved yet. Research and design are *inline sections*
+   (`## Research`, `## Design`) added by later phases; promote to a `<slug>/`
+   directory with sibling files only if the piece grows genuinely large.
 
 6. **Confirm once, then step back.** Show the user the anchor, the acceptance,
    and — if the work turns on something unconfirmed (an unfamiliar API, a

@@ -15,6 +15,7 @@ Every working doc opens with YAML frontmatter:
 ---
 plan: <kebab-name>          # stable id; matches the branch name
 harness: v2 · <flavor>      # which harness style produced this plan (from .harness/harness.toml)
+branch: <branch>            # the branch this work lives on — /release cleans it up on close
 anchor: outcome|spec|tdd    # the acceptance dial for this work
 status: <lifecycle-state>   # from the closed set below
 next: <one line>            # resume point — the very next concrete action (a cold session reads this first)
@@ -25,21 +26,19 @@ gate: <verdict>                    # see gate line below; "pending" until gated
 
 ## Location, naming, and shape
 
-A piece of work is a **directory**, not a single file — so nothing goes stale as
-one giant scroll. Same parent dirs as always, for unbroken history:
+A piece of work is a **flat `docs/exec-plans/active/YYYY-MM-DD-<slug>.md`** by
+default — the status block + acceptance + inline `## Research` / `## Design`
+sections + `next:`. Same parent dirs as always, for unbroken history; it moves to
+`docs/exec-plans/completed/` when `Shipped`.
 
-- `docs/exec-plans/active/YYYY-MM-DD-<slug>/` while in flight (`<slug>` matches
-  the branch name); the whole directory moves to `docs/exec-plans/completed/`
-  when `Shipped`.
-- Inside it: `plan.md` is the spine (status block + acceptance + progress +
-  `next:`). Anchor-scaled siblings: `research/*.md` (cited findings, only when
-  the work warrants) and `design.md` (spec/tdd; self-contained, fixed sections).
-  `outcome` work is often just `plan.md`.
+- Only a genuinely large piece promotes to a `<slug>/` directory: `plan.md` (the
+  spine that keeps the bound markers) plus `research/*.md` and `design.md`
+  siblings. The tooling reads flat files and `<slug>/plan.md` alike, so the shape
+  is a free choice per piece — most stay flat.
 - `docs/exec-plans/tech-debt-tracker.md` is unchanged.
 
-The `harness:` header tells a mixed repo which style produced each plan; the
-`next:` line is the one-line resume point a cold session reads first. v1 plans
-have neither.
+The `harness:` header tells a mixed repo which style produced each plan; `next:`
+is the one-line resume point a cold session reads first. v1 plans have neither.
 
 ## Closed lifecycle vocabulary
 

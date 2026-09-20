@@ -50,6 +50,14 @@ while IFS= read -r file; do
   [ -f "$file" ] || continue
   status="$(fm_field "$file" status)"
 
+  # 0. anchor enum: the frontmatter anchor must be outcome|spec|tdd (first token),
+  #    so a misused field (e.g. "docs-and-content (slim gate)") can't ship clean.
+  anchor="$(fm_field "$file" anchor)"
+  case "${anchor%% *}" in
+    ""|outcome|spec|tdd) : ;;
+    *) flag "$file" "-" "invalid anchor '$anchor' — must be outcome|spec|tdd" ;;
+  esac
+
   # 1. terminal status (frontmatter only — not prose) still under active/.
   if is_shipped "$status"; then
     flag "$file" "-" "terminal status '$status' still under active/ — move to completed/"

@@ -3,8 +3,8 @@
 # the footprint is in the sibling manifest.lock.
 name      = "handoff-harness"
 flavor    = "lean"          # lean | standard
-version   = "v2.1.0"
-commit    = "06cbf16"
+version   = "v2.1.1"
+commit    = "1c1f4d6"
 installed = "2026-09-16"
 source    = "github.com/dtammam/handoff-harness"
 targets   = ["claude"]         # tool integrations to keep in sync, e.g. "claude", "cursor"
@@ -12,3 +12,6 @@ targets   = ["claude"]         # tool integrations to keep in sync, e.g. "claude
 [defaults]
 anchor      = "outcome"        # outcome | spec | tdd
 involvement = "interactive"   # interactive | auto
+
+[cleanup]
+delete_merged_branch = true       # /release deletes the merged branch (local + remote) on close

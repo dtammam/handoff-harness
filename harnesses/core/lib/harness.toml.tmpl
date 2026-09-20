@@ -12,3 +12,6 @@ targets   = [{{TARGETS}}]         # tool integrations to keep in sync, e.g. "cla
 [defaults]
 anchor      = "{{ANCHOR}}"        # outcome | spec | tdd
 involvement = "{{INVOLVEMENT}}"   # interactive | auto
+
+[cleanup]
+delete_merged_branch = true       # /release deletes the merged branch (local + remote) on close
