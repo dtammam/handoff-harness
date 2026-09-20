@@ -87,6 +87,7 @@ lib/apply-regions.sh|.harness/lib/apply-regions.sh|whole|all
 .claude/commands/release.md|.claude/commands/release.md|whole|claude
 .claude/commands/status.md|.claude/commands/status.md|whole|claude
 .claude/commands/seed.md|.claude/commands/seed.md|whole|claude
+.claude/commands/handoff.md|.claude/commands/handoff.md|whole|claude
 .claude/hooks/session-start.sh|.claude/hooks/session-start.sh|whole|claude
 .claude/settings.json|.claude/settings.json|once|claude
 EOF
