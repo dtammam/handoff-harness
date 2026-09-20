@@ -3,9 +3,9 @@
 plan: research-and-artifact-split
 harness: v2 · lean
 anchor: spec
-status: Building
-next: commit + push; open PR (slim gate — adversary only — optional dogfood)
-gate: pending
+status: Shipped v2.1.0
+next: —
+gate: merged via PR #12
 ---
 
 # Research phase + per-piece artifact directory
