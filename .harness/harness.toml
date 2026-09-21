@@ -3,8 +3,8 @@
 # the footprint is in the sibling manifest.lock.
 name      = "handoff-harness"
 flavor    = "lean"          # lean | standard
-version   = "v2.1.1"
-commit    = "1c1f4d6"
+version   = "v2.3.0"
+commit    = "e225775"
 installed = "2026-09-16"
 source    = "github.com/dtammam/handoff-harness"
 targets   = ["claude"]         # tool integrations to keep in sync, e.g. "claude", "cursor"
