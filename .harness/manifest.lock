@@ -4,6 +4,7 @@ AGENTS.md|region
 .claude/agents/qa.md|whole
 .claude/agents/security-brief.md|whole
 .claude/commands/gate.md|whole
+.claude/commands/handoff.md|whole
 .claude/commands/release.md|whole
 .claude/commands/seed.md|whole
 .claude/commands/start.md|whole
